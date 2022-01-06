@@ -22,6 +22,7 @@ var canvas_y = undefined;
 
 //Snake Details
 var snake = undefined;
+var food = undefined;
 var segmentSize = 10;
 var speed = 2;
 var dx = speed;
@@ -44,6 +45,7 @@ function setupCanvas() {
     c = canvas.getContext('2d');
 
     snake = new Snake(canvas.width / 2, canvas.height / 2);
+    food = new Food();
 
     window.addEventListener('keydown', function(event){
       switch(event.code){
@@ -83,6 +85,7 @@ function Snake(startX, startY) {
   this.draw = function () {
     c.beginPath();
     c.rect(this.xLeftBound, this.yTopBound, segmentSize, segmentSize);
+    c.fillStyle = 'black';
     c.fill();
   }
 
@@ -107,10 +110,24 @@ function Snake(startX, startY) {
   }
 }
 
+//Food Class
+function Food(){
+  this.x = Math.random()*canvas.width;
+  this.y = Math.random()*canvas.height;
+
+  this.draw = function(){
+    c.beginPath();
+    c.arc(this.x, this.y, 5, 0, Math.PI*2, false);
+    c.fillStyle = '#ff6150';
+    c.fill();
+  }
+}
+
 function animate() {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
   snake.update();
+  food.draw();
 }
 
 
